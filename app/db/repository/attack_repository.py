@@ -13,7 +13,7 @@ class AttackRepository:
         return self.collection.insert_one(attack.dict()).inserted_id
 
     def insert_many_attacks(self, attacks: List[AttackModel]):
-        return self.collection.insert_many([attack.dict() for attack in attacks]).inserted_ids
+        return self.collection.insert_many([attack.model_dump() for attack in attacks if attack is not None]).inserted_ids
 
     def get_attack_by_id(self, attack_id: str):
         return self.collection.find_one({"_id": ObjectId(attack_id)})
