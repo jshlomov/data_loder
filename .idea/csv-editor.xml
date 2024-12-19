@@ -10,7 +10,14 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\app\db\data\terror attacks 1000 rows.csv">
+        <entry key="\app\db\data\RAND_Database_of_Worldwide_Terrorism_Incidents.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app\db\data\terror_attacks _1000_rows.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

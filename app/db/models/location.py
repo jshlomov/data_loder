@@ -20,9 +20,3 @@ class LocationModel(BaseModel):
         if v is not None and (v < -180 or v > 180):
             raise ValueError('Longitude must be between -180 and 180.')
         return v
-
-    @field_validator('city', 'country')
-    def check_non_empty(cls, v, field):
-        if v is None or v.strip() == "":
-            raise ValueError(f'{field.name.capitalize()} cannot be empty.')
-        return v

@@ -15,12 +15,6 @@ class AttackModel(BaseModel):
     terrorists_num: Optional[int]
     summary: Optional[str]
 
-    @field_validator('event_id')
-    def validate_event_id(cls, v):
-        if not v.strip():
-            raise ValueError('Event ID cannot be empty or just whitespace.')
-        return v
-
     @field_validator('date')
     def validate_date(cls, v):
         if not re.match(r"\d{4}-\d{2}-\d{2}", v):
