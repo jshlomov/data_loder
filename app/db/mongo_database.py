@@ -2,8 +2,11 @@ import os
 
 from dotenv import load_dotenv
 
+from app import db
+
 load_dotenv(verbose=True)
 
 db_url = os.environ['MONGO_DB_URL']
-db_name = "terrorism_db"
-collection_name = "attacks"
+db_name = os.environ['MONGO_DB_NAME']
+collection_name =os.environ['MONGO_COLLECTION_NAME']
+collection_test = os.environ['MONGO_TEST_COLLECTION_NAME']

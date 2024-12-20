@@ -1,12 +1,12 @@
 from typing import Optional
 import pandas as pd
-from app.db.models.attack import AttackModel
-from app.db.models.location import LocationModel
-from app.db.repository.attack_repository import AttackRepository
-from app.db.repository.csv_repository import create_df_first_csv, create_df_second_csv
+from app.models.mongo.attack import AttackModel
+from app.models.mongo.location import LocationModel
+from app.repositories.mongo import AttackRepository
+from app.repositories.csv.csv_repository import create_df_first_csv, create_df_second_csv
 
 
-def validate_and_transform(row) -> Optional[AttackModel]:
+def validate_and_transform_mongo_models(row) -> Optional[AttackModel]:
     try:
         location = LocationModel(
             city=str(row.get("city")) if pd.notna(row.get("city")) else None,
@@ -64,5 +64,5 @@ def process_and_insert_data(first_csv_path, second_csv_path, db_url, db_name, co
     )
     repository = AttackRepository(db_url, db_name, collection_name)
 
-    attacks = [validate_and_transform(row) for _, row in combined_df.iterrows()]
+    attacks = [validate_and_transform_mongo_models(row) for _, row in combined_df.iterrows()]
     repository.insert_many_attacks(attacks)

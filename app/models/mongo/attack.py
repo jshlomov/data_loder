@@ -1,6 +1,6 @@
 from pydantic import BaseModel, field_validator
 from typing import List, Optional
-from app.db.models.location import LocationModel
+from app.models.mongo.location import LocationModel
 import re
 
 class AttackModel(BaseModel):

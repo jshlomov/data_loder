@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from typing import List
 from bson import ObjectId
-from app.db.models.attack import AttackModel
+from app.models.mongo.attack import AttackModel
 
 class AttackRepository:
     def __init__(self, db_url: str, db_name: str, collection_name: str):
@@ -10,10 +10,12 @@ class AttackRepository:
         self.collection = self.db[collection_name]
 
     def insert_attack(self, attack: AttackModel):
-        return self.collection.insert_one(attack.dict()).inserted_id
+        return self.collection.insert_one(attack.model_dump()).inserted_id
 
     def insert_many_attacks(self, attacks: List[AttackModel]):
-        return self.collection.insert_many([attack.model_dump() for attack in attacks if attack is not None]).inserted_ids
+        return self.collection.insert_many(
+            [attack.model_dump() for attack in attacks if attack is not None]
+        ).inserted_ids
 
     def get_attack_by_id(self, attack_id: str):
         return self.collection.find_one({"_id": ObjectId(attack_id)})
