@@ -2,8 +2,8 @@ from typing import Optional
 import pandas as pd
 from app.models.mongo.attack import AttackModel
 from app.models.mongo.location import LocationModel
-from app.repositories.mongo import AttackRepository
 from app.repositories.csv.csv_repository import create_df_first_csv, create_df_second_csv
+from app.repositories.mongo.attack_repository import AttackRepository
 
 
 def validate_and_transform_mongo_models(row) -> Optional[AttackModel]:
@@ -36,11 +36,12 @@ def validate_and_transform_mongo_models(row) -> Optional[AttackModel]:
             str(row.get("gname2")) if pd.notna(row.get("gname2")) else None,
             str(row.get("gname3")) if pd.notna(row.get("gname3")) else None
         ]
-        group_names = [gname for gname in group_names if gname]  # Remove None values
+        group_names = [gname for gname in group_names if gname]
 
         return AttackModel(
             event_id=str(row.get("eventid")),
-            date=row.get("date").strftime("%Y-%m-%d") if pd.notna(row.get("date")) else None,
+            date=(row.get("date").to_pydatetime() if isinstance(row.get("date"), pd.Timestamp) else row.get("date"))
+            if pd.notna(row.get("date")) else None,
             location=location,
             attack_types=attack_types,
             target_types=target_types,
