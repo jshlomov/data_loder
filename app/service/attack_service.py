@@ -4,6 +4,7 @@ from app.models.mongo.attack import AttackModel
 from app.models.mongo.location import LocationModel
 from app.repositories.csv.csv_repository import create_df_first_csv, create_df_second_csv
 from app.repositories.mongo.attack_repository import AttackRepository
+from app.repositories.neo4j.insertion_repository import prepare_data_from_df, insert_all_data
 
 
 def validate_and_transform_mongo_models(row) -> Optional[AttackModel]:
@@ -63,7 +64,12 @@ def process_and_insert_data(first_csv_path, second_csv_path, db_url, db_name, co
         subset=['date','gname','nkill','nwound','city','country_txt', 'summary'],
         keep='first'
     )
-    repository = AttackRepository(db_url, db_name, collection_name)
+    # repository = AttackRepository(db_url, db_name, collection_name)
+    # attacks = [validate_and_transform_mongo_models(row) for _, row in combined_df.iterrows()]
+    # repository.insert_many_attacks(attacks)
 
-    attacks = [validate_and_transform_mongo_models(row) for _, row in combined_df.iterrows()]
-    repository.insert_many_attacks(attacks)
+    attacks = prepare_data_from_df(combined_df)
+    insert_all_data(attacks)
+
+
+
