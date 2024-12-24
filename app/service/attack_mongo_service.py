@@ -3,6 +3,7 @@ import pandas as pd
 from app.models.mongo.attack import AttackModel
 from app.models.mongo.location import LocationModel
 from app.repositories.csv_repository import create_df_first_csv, create_df_second_csv
+from app.repositories.mongo_repository import AttackRepository
 from app.repositories.neo4j_repository import prepare_data_from_df, insert_all_data
 
 
@@ -63,12 +64,15 @@ def process_and_insert_data(first_csv_path, second_csv_path, db_url, db_name, co
         subset=['date','gname','nkill','nwound','city','country_txt', 'summary'],
         keep='first'
     )
-    # repository = AttackRepository(db_url, db_name, collection_name)
-    # attacks = [validate_and_transform_mongo_models(row) for _, row in combined_df.iterrows()]
-    # repository.insert_many_attacks(attacks)
+    repository = AttackRepository(db_url, db_name, collection_name)
+    attacks = [validate_and_transform_mongo_models(row) for _, row in combined_df.iterrows()]
+    repository.insert_many_attacks(attacks)
 
     attacks = prepare_data_from_df(combined_df)
     insert_all_data(attacks)
+
+    # data_list = convert_df_to_elastic_model_list(combined_df)
+    # insert_all_data_elastic(data_list)
 
 
 
