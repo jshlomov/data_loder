@@ -2,9 +2,8 @@ from typing import Optional
 import pandas as pd
 from app.models.mongo.attack import AttackModel
 from app.models.mongo.location import LocationModel
-from app.repositories.csv.csv_repository import create_df_first_csv, create_df_second_csv
-from app.repositories.mongo.attack_repository import AttackRepository
-from app.repositories.neo4j.insertion_repository import prepare_data_from_df, insert_all_data
+from app.repositories.csv_repository import create_df_first_csv, create_df_second_csv
+from app.repositories.neo4j_repository import prepare_data_from_df, insert_all_data
 
 
 def validate_and_transform_mongo_models(row) -> Optional[AttackModel]:
