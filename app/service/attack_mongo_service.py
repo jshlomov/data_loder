@@ -71,7 +71,7 @@ def process_and_insert_data(first_csv_path, second_csv_path, db_url, db_name, co
     attacks = prepare_data_from_df(combined_df)
     insert_all_data(attacks)
 
-    # data_list = convert_df_to_elastic_model_list(combined_df)
+    # data_list = convert_func(combined_df)
     # insert_all_data_elastic(data_list)
 
 
