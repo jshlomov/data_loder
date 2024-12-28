@@ -1,12 +1,10 @@
 import os
 
 from dotenv import load_dotenv
-
-from app import db
+from pymongo import MongoClient
 
 load_dotenv(verbose=True)
 
-db_url = os.environ['MONGO_DB_URL']
-db_name = os.environ['MONGO_DB_NAME']
-collection_name =os.environ['MONGO_DB_COLLECTION']
-collection_test = os.environ['MONGO_DB_COLLECTION_TEST']
+client = MongoClient(os.environ['MONGO_DB_URL'])
+db = client[os.environ['MONGO_DB_NAME']]
+attack_collection = db[os.environ['MONGO_DB_COLLECTION']]

@@ -12,7 +12,7 @@ def get_elasticsearch_client():
 
 
 def create_index(index_name, es_client):
-    if es_client.indices.exists(index=index_name):
+    if not es_client.indices.exists(index=index_name):
         es_client.indices.delete(index=index_name)
     es_client.indices.create(index=index_name, body={
         "settings": {

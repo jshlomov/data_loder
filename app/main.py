@@ -1,4 +1,3 @@
-from app.db.mongo_database import db_url, db_name, collection_name
 from app.service.attack_mongo_service import process_and_insert_data
 
 if __name__ == "__main__":
@@ -7,8 +6,5 @@ if __name__ == "__main__":
 
     process_and_insert_data(
         first_csv_path,
-        second_csv_path,
-        db_url,
-        db_name,
-        collection_name
+        second_csv_path
     )
