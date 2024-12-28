@@ -67,8 +67,8 @@ def validate_and_transform_neo4j_models(df: pd.DataFrame) -> List[Attack]:
         attack
         for _, row in filtered_df.iterrows()
         if (
-            attack := create_attack(row) is not None
-        )
+            attack := create_attack(row)
+        ) is not None
     ]
     return attacks
 
@@ -90,3 +90,7 @@ def create_attack(row):
     except Exception as e:
         print(f"Error creating Attack for row {row}: {e}")
         return None
+
+def validate_and_transform_elastic_models(df: pd.DataFrame):
+    elastic_df = df[["summary", "date"]]
+    return elastic_df.to_dict(orient="records")

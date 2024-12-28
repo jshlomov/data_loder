@@ -1,7 +1,5 @@
-import math
 from dataclasses import asdict
 from typing import List
-from tqdm import tqdm
 from app.db.neo4j_database import driver
 from app.models.neo4j.attack import Attack
 
@@ -26,6 +24,20 @@ def insert_all_data(attacks: List[Attack]):
         CREATE (a)-[:OCCURRED_AT]->(l)
     """
 
-    rows = [attack for attack in attacks if isinstance(attack, Attack)]
+    rows = [convert_to_dict(attack) for attack in attacks if isinstance(attack, Attack)]
     with driver.session() as session:
         session.run(query, parameters={"rows": rows})
+
+def convert_to_dict(attack: Attack):
+    attack_dict = asdict(attack)
+    attack_dict["date"] = attack.date.isoformat()
+    attack_dict["group"] = {"name": attack.group.name}
+    attack_dict["target_type"] = {"name": attack.target_type.name}
+    attack_dict["attack_type"] = {"name": attack.attack_type.name}
+    attack_dict["location"] = {
+        "region": attack.location.region,
+        "country": attack.location.country,
+        "latitude": attack.location.latitude,
+        "longitude": attack.location.longitude,
+    }
+    return attack_dict

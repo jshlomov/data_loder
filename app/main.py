@@ -1,4 +1,4 @@
-from app.service.attack_mongo_service import process_and_insert_data
+from app.service.attack_service import process_and_insert_data
 
 if __name__ == "__main__":
     first_csv_path = 'data/globalterrorismdb_0718dist.csv'

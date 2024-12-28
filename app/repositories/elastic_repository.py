@@ -1,10 +1,7 @@
 from pprint import pprint
 from typing import List
-
 import elasticsearch
 from elasticsearch.helpers import bulk
-from pandas import DataFrame
-
 from app.db.elastic_database import get_elasticsearch_client
 
 
