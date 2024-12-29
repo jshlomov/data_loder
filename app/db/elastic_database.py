@@ -1,4 +1,10 @@
+import os
+
+from dotenv import load_dotenv
 from elasticsearch import Elasticsearch
+
+
+load_dotenv(verbose=True)
 
 def get_elasticsearch_client():
     client = Elasticsearch(
@@ -32,7 +38,7 @@ def create_index(index_name, es_client):
 def init_elastic():
     try:
         es_client = get_elasticsearch_client()
-        create_index("attacks", es_client)
+        create_index(os.environ['ELASTIC_INDEX_NAME'], es_client)
     except Exception as e:
         print(f"Error initializing Elasticsearch: {e}")
 

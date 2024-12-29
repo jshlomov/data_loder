@@ -1,5 +1,9 @@
+import os
+import uuid
 from typing import Optional, List
 import pandas as pd
+from dotenv import load_dotenv
+
 from app.models.mongo.attack import AttackModel
 from app.models.mongo.location import LocationModel
 from app.models.neo4j.attack import Attack
@@ -7,6 +11,7 @@ from app.models.neo4j.attack_type import AttackType
 from app.models.neo4j.group import Group
 from app.models.neo4j.location import Location
 from app.models.neo4j.target_type import TargetType
+load_dotenv(verbose=True)
 
 
 def validate_and_transform_mongo_models(row) -> Optional[AttackModel]:
@@ -93,4 +98,14 @@ def create_attack(row):
 
 def validate_and_transform_elastic_models(df: pd.DataFrame):
     elastic_df = df[["summary", "date"]]
-    return elastic_df.to_dict(orient="records")
+    elastic_df.dropna(inplace=True)
+    elastic_dict = elastic_df.to_dict(orient="records")
+    elastic_data = [
+        {
+           '_id': uuid.uuid4(),
+           '_index': os.environ['ELASTIC_INDEX_NAME'],
+           '_source': row
+        }
+        for row in elastic_dict
+    ]
+    return elastic_data

@@ -15,11 +15,12 @@ def process_and_insert_data(first_csv_path, second_csv_path):
         subset=['date','gname','nkill','nwound','city','country_txt', 'summary'],
         keep='first'
     )
-    # attacks = [conv_and_valid_service.validate_and_transform_mongo_models(row) for _, row in combined_df.iterrows()]
-    # mongo_repository.insert_many_attacks(attack_collection, attacks)
-    #
-    # attacks = conv_and_valid_service.validate_and_transform_neo4j_models(combined_df)
-    # neo4j_repository.insert_all_data(attacks)
+
+    attacks = [conv_and_valid_service.validate_and_transform_mongo_models(row) for _, row in combined_df.iterrows()]
+    mongo_repository.insert_many_attacks(attack_collection, attacks)
+
+    attacks = conv_and_valid_service.validate_and_transform_neo4j_models(combined_df)
+    neo4j_repository.insert_all_data(attacks)
 
     elastic_data = conv_and_valid_service.validate_and_transform_elastic_models(combined_df)
     elastic_repository.insert_all_data_elastic(elastic_data)
